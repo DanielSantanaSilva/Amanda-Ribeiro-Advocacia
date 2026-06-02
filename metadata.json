@@ -1,0 +1,6 @@
+{
+  "name": "Amanda Ribeiro Advogados",
+  "description": "Website institucional e plataforma de consultoria jurídica sob medida.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
