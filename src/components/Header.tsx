@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Scale } from 'lucide-react';
+import logoImg from '../assets/images/elegant_ar_sig_logo_1780440446516.png';
 
 interface HeaderProps {
   activeSection: string;
@@ -51,7 +52,7 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
             <img 
               alt="Amanda Ribeiro Logo" 
               className="h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-110 mix-blend-screen -my-2" 
-              src="/src/assets/images/elegant_ar_sig_logo_1780440446516.png"
+              src={logoImg}
               referrerPolicy="no-referrer"
             />
             <div className="flex flex-col">

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Phone, MapPin, Scale, Share2, Globe, Shield } from 'lucide-react';
+import logoImg from '../assets/images/elegant_ar_sig_logo_1780440446516.png';
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
@@ -20,7 +21,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               <img 
                 alt="Amanda Ribeiro Logo" 
                 className="h-16 w-auto object-contain transition-transform duration-300 hover:scale-110 mix-blend-screen -my-2" 
-                src="/src/assets/images/elegant_ar_sig_logo_1780440446516.png"
+                src={logoImg}
                 referrerPolicy="no-referrer"
               />
               <span className="font-serif tracking-widest text-white font-bold text-base uppercase">
