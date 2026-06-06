@@ -21,19 +21,19 @@ export default function About() {
     <section id="sobre" className="py-24 bg-surface relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
+
           {/* Visual Canvas Side */}
           <div className="relative">
             <div className="aspect-square bg-surface-container overflow-hidden rounded-lg shadow-xl border border-outline-variant/50 relative group">
               <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-all duration-500 z-10" />
-              <img 
-                alt="Dra. Amanda Ribeiro" 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105" 
+              <img
+                alt="Dra. Amanda Ribeiro"
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop"
                 referrerPolicy="no-referrer"
               />
             </div>
-            
+
             {/* Overlay Badge of Distinction */}
             <div className="absolute -bottom-6 -right-6 bg-primary text-white p-6 shadow-2xl rounded-sm border-l-4 border-gold-leaf hidden sm:block">
               <div className="flex items-center gap-3">
