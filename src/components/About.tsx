@@ -25,10 +25,10 @@ export default function About() {
           {/* Visual Canvas Side */}
           <div className="relative">
             <div className="aspect-square bg-surface-container overflow-hidden rounded-lg shadow-xl border border-outline-variant/50 relative group">
-              <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-all duration-500 z-10" />
+              <div className="absolute inset-0 bg-primary/10 lg:group-hover:bg-transparent transition-all duration-500 z-10" />
               <img
                 alt="Dra. Amanda Ribeiro"
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                className="w-full h-full object-cover lg:grayscale lg:group-hover:grayscale-0 transition-all duration-700 transform lg:group-hover:scale-105"
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop"
                 referrerPolicy="no-referrer"
               />
