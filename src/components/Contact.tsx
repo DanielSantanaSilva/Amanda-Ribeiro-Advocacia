@@ -97,7 +97,7 @@ export default function Contact({ preselectedSubject, onClearPreselected, onOpen
                   </div>
                   <div>
                     <h4 className="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Telefone / Central WhatsApp</h4>
-                    <p className="text-sm text-primary font-bold mt-0.5">+55 (11) 99999-0000</p>
+                    <p className="text-sm text-primary font-bold mt-0.5">+55 (11) 95649-2055</p>
                   </div>
                 </div>
 

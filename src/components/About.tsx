@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckCircle2, Award, History, Landmark } from 'lucide-react';
+import amandaImg from '../assets/images/dra_amanda_ribeiro.png';
 
 export default function About() {
   const valuePills = [
@@ -29,7 +30,7 @@ export default function About() {
               <img
                 alt="Dra. Amanda Ribeiro"
                 className="w-full h-full object-cover lg:grayscale lg:group-hover:grayscale-0 transition-all duration-700 transform lg:group-hover:scale-105"
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop"
+                src={amandaImg}
                 referrerPolicy="no-referrer"
               />
             </div>
@@ -41,7 +42,7 @@ export default function About() {
                   <Award className="w-8 h-8" />
                 </div>
                 <div>
-                  <p className="font-serif text-2xl font-bold tracking-tight text-white">+15 Anos</p>
+                  <p className="font-serif text-2xl font-bold tracking-tight text-white">+10 Anos</p>
                   <p className="text-gold-leaf text-[10px] uppercase tracking-widest font-semibold mt-0.5">De Atuação Dedicada</p>
                 </div>
               </div>
@@ -88,15 +89,15 @@ export default function About() {
             <span className="text-[10px] uppercase tracking-widest text-on-surface-variant block mt-1">Processos Digitais</span>
           </div>
           <div>
-            <span className="block font-serif text-3xl sm:text-4xl text-primary font-bold">95%+</span>
+            <span className="block font-serif text-3xl sm:text-4xl text-primary font-bold">90%</span>
             <span className="text-[10px] uppercase tracking-widest text-on-surface-variant block mt-1">Eficácia em Acordos</span>
           </div>
           <div>
-            <span className="block font-serif text-3xl sm:text-4xl text-primary font-bold">1.500+</span>
+            <span className="block font-serif text-3xl sm:text-4xl text-primary font-bold">900+</span>
             <span className="text-[10px] uppercase tracking-widest text-on-surface-variant block mt-1">Clientes Satisfeitos</span>
           </div>
           <div>
-            <span className="block font-serif text-3xl sm:text-4xl text-primary font-bold">R$ 50M+</span>
+            <span className="block font-serif text-3xl sm:text-4xl text-primary font-bold">R$ 10M+</span>
             <span className="text-[10px] uppercase tracking-widest text-on-surface-variant block mt-1">De Patrimônio Gerido</span>
           </div>
         </div>
