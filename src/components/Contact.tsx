@@ -122,7 +122,7 @@ export default function Contact({ preselectedSubject, onClearPreselected, onOpen
                   <span className="text-[10px] uppercase font-bold tracking-widest">Triador Virtual Inteligente</span>
                 </div>
                 <p className="text-xs text-on-primary-container leading-relaxed mb-4">
-                  Deseja triar seu caso civil, de família ou societário de forma interativa? Nossa inteligência jurídica extrai orientações úteis para você.
+                  Deseja triar seu caso imobiliário, cível, de família ou societário de forma interativa? Nossa inteligência jurídica extrai orientações úteis para você.
                 </p>
                 <button
                   onClick={onOpenAI}
@@ -215,6 +215,7 @@ export default function Contact({ preselectedSubject, onClearPreselected, onOpen
                       onChange={(e) => setSubject(e.target.value)}
                       className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all"
                     >
+                      <option value="Direito Imobiliário">Direito Imobiliário</option>
                       <option value="Direito Civil">Direito Civil</option>
                       <option value="Família e Sucessões">Família e Sucessões</option>
                       <option value="Direito do Trabalho">Direito do Trabalho</option>
