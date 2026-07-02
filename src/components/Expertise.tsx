@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Scale, HeartHandshake, Briefcase, Building2, X, ArrowUpRight, Check } from 'lucide-react';
+import { Scale, HeartHandshake, Briefcase, Building2, X, ArrowUpRight, Check, Landmark } from 'lucide-react';
 import { PracticeArea } from '../types';
 
 interface ExpertiseProps {
@@ -23,16 +23,16 @@ export default function Expertise({ onSelectArea }: ExpertiseProps) {
         // Resilient Fallback
         setAreas([
           {
-            id: "civil",
-            title: "Direito Civil",
-            description: "Soluções em contratos, responsabilidade civil e direitos reais com foco em prevenção de litígios.",
-            longDescription: "Nosso departamento civil atua de forma estratégica tanto na esfera consultiva e contratual quanto no contencioso de alta complexidade. Protegemos os interesses patrimoniais e existenciais de nossos clientes.",
-            iconName: "Scale",
+            id: "realestate",
+            title: "Direito Imobiliário",
+            description: "Assessoria completa em negócios imobiliários, regularização de imóveis, contratos e incorporações.",
+            longDescription: "Nossa advocacia imobiliária oferece soluções estratégicas para proprietários, investidores e construtoras. Atuamos na segurança documental, contratos de compra e venda, locações, incorporações e regularização de imóveis.",
+            iconName: "Landmark",
             services: [
-              "Elaboração e análise de Contratos Complexos",
-              "Ações de Responsabilidade Civil e Indenizações",
-              "Direito de Propriedade e Posse (Imobiliário)",
-              "Cobranças e Recuperação de Crédito"
+              "Regularização e Averbação de Imóveis",
+              "Contratos de Compra, Venda e Locação",
+              "Assessoria em Incorporações Imobiliárias",
+              "Ações Possessórias e Usucapião"
             ],
             gridSpan: "md:col-span-8"
           },
@@ -47,6 +47,20 @@ export default function Expertise({ onSelectArea }: ExpertiseProps) {
               "Divórcios (Consensual ou Litigioso)",
               "Inventários e Partilhas Judiciais ou Extrajudiciais",
               "Pactos Antenupciais e Regulamentação de Guarda"
+            ],
+            gridSpan: "md:col-span-4"
+          },
+          {
+            id: "civil",
+            title: "Direito Civil",
+            description: "Soluções em contratos, responsabilidade civil e direitos reais com foco em prevenção de litígios.",
+            longDescription: "Nosso departamento civil atua de forma estratégica tanto na esfera consultiva e contratual quanto no contencioso de alta complexidade. Protegemos os interesses patrimoniais e existenciais de nossos clientes.",
+            iconName: "Scale",
+            services: [
+              "Elaboração e análise de Contratos Complexos",
+              "Ações de Responsabilidade Civil e Indenizações",
+              "Direito de Propriedade e Posse (Imobiliário)",
+              "Cobranças e Recuperação de Crédito"
             ],
             gridSpan: "md:col-span-4"
           },
@@ -76,7 +90,7 @@ export default function Expertise({ onSelectArea }: ExpertiseProps) {
               "Acordo de Sócios e Governança Corporativa",
               "Blindagem Patrimonial de Sócios e Diretores"
             ],
-            gridSpan: "md:col-span-8"
+            gridSpan: "md:col-span-4"
           }
         ]);
         setLoading(false);
@@ -94,6 +108,8 @@ export default function Expertise({ onSelectArea }: ExpertiseProps) {
         return <Briefcase className="w-10 h-10 text-gold-leaf" />;
       case 'Building2':
         return <Building2 className="w-10 h-10 text-gold-leaf" />;
+      case 'Landmark':
+        return <Landmark className="w-10 h-10 text-gold-leaf" />;
       default:
         return <Scale className="w-10 h-10 text-gold-leaf" />;
     }
@@ -127,16 +143,15 @@ export default function Expertise({ onSelectArea }: ExpertiseProps) {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             {areas.map((area) => {
-              const isDark = area.id === 'civil';
+              const isDark = area.id === 'realestate';
               return (
                 <div
                   key={area.id}
                   onClick={() => setSelectedArea(area)}
-                  className={`${area.gridSpan} group relative overflow-hidden rounded-md border p-8 flex flex-col justify-between cursor-pointer transition-all duration-300 transform hover:shadow-xl hover:-translate-y-1 ${
-                    isDark 
-                      ? 'bg-primary border-gold-leaf/20 text-white' 
-                      : 'bg-surface border-outline-variant/50 text-primary'
-                  }`}
+                  className={`${area.gridSpan} group relative overflow-hidden rounded-md border p-8 flex flex-col justify-between cursor-pointer transition-all duration-300 transform hover:shadow-xl hover:-translate-y-1 ${isDark
+                    ? 'bg-primary border-gold-leaf/20 text-white'
+                    : 'bg-surface border-outline-variant/50 text-primary'
+                    }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="p-3 bg-white/5 border border-white/10 rounded">
@@ -168,9 +183,9 @@ export default function Expertise({ onSelectArea }: ExpertiseProps) {
       {selectedArea && (
         <div className="fixed inset-0 bg-primary/80 backdrop-blur-sm z-[999] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full p-8 md:p-10 border border-gold-leaf/20 shadow-2xl relative animate-scaleIn">
-            
+
             {/* Close */}
-            <button 
+            <button
               onClick={() => setSelectedArea(null)}
               className="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors cursor-pointer"
             >
@@ -210,13 +225,13 @@ export default function Expertise({ onSelectArea }: ExpertiseProps) {
 
             {/* Footer triggers */}
             <div className="flex items-center gap-4 justify-end pt-4 border-t border-outline-variant/30">
-              <button 
+              <button
                 onClick={() => setSelectedArea(null)}
                 className="px-5 py-2 text-xs uppercase tracking-wider font-semibold text-on-surface-variant hover:text-primary"
               >
                 Voltar
               </button>
-              <button 
+              <button
                 onClick={() => handleQuickAgendar(selectedArea.title)}
                 className="bg-primary hover:bg-ink-dark text-white text-xs uppercase tracking-wider font-bold py-3 px-6 rounded transition-all cursor-pointer"
               >

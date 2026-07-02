@@ -89,16 +89,16 @@ const testimonials = [
 app.get("/api/practice-areas", (req, res) => {
   res.json([
     {
-      id: "civil",
-      title: "Direito Civil",
-      description: "Soluções em contratos, responsabilidade civil e direitos reais com foco em prevenção de litígios.",
-      longDescription: "Nosso departamento civil atua de forma estratégica tanto na esfera consultiva e contratual quanto no contencioso de alta complexidade. Protegemos os interesses patrimoniais e existenciais de nossos clientes através de soluções criativas e seguras.",
-      iconName: "Scale",
+      id: "realestate",
+      title: "Direito Imobiliário",
+      description: "Assessoria completa em negócios imobiliários, regularização de imóveis, contratos e incorporações.",
+      longDescription: "Nossa advocacia imobiliária oferece soluções estratégicas para proprietários, investidores e construtoras. Atuamos na segurança documental, contratos de compra e venda, locações, incorporações e regularização de imóveis.",
+      iconName: "Landmark",
       services: [
-        "Elaboração e análise de Contratos Complexos",
-        "Ações de Responsabilidade Civil e Indenizações",
-        "Direito de Propriedade e Posse (Imobiliário)",
-        "Cobranças e Recuperação de Crédito"
+        "Regularização e Averbação de Imóveis",
+        "Contratos de Compra, Venda e Locação",
+        "Assessoria em Incorporações Imobiliárias",
+        "Ações Possessórias e Usucapião"
       ],
       gridSpan: "md:col-span-8"
     },
@@ -113,6 +113,20 @@ app.get("/api/practice-areas", (req, res) => {
         "Divórcios (Consensual ou Litigioso)",
         "Inventários e Partilhas Judiciais ou Extrajudiciais",
         "Pactos Antenupciais e Regulamentação de Guarda"
+      ],
+      gridSpan: "md:col-span-4"
+    },
+    {
+      id: "civil",
+      title: "Direito Civil",
+      description: "Soluções em contratos, responsabilidade civil e direitos reais com foco em prevenção de litígios.",
+      longDescription: "Nosso departamento civil atua de forma estratégica tanto na esfera consultiva e contratual quanto no contencioso de alta complexidade. Protegemos os interesses patrimoniais e existenciais de nossos clientes através de soluções criativas e seguras.",
+      iconName: "Scale",
+      services: [
+        "Elaboração e análise de Contratos Complexos",
+        "Ações de Responsabilidade Civil e Indenizações",
+        "Direito de Propriedade e Posse (Imobiliário)",
+        "Cobranças e Recuperação de Crédito"
       ],
       gridSpan: "md:col-span-4"
     },
@@ -142,7 +156,7 @@ app.get("/api/practice-areas", (req, res) => {
         "Acordo de Sócios e Governança Corporativa",
         "Blindagem Patrimonial de Sócios e Diretores"
       ],
-      gridSpan: "md:col-span-8"
+      gridSpan: "md:col-span-4"
     }
   ]);
 });
@@ -226,7 +240,7 @@ app.post("/api/consult", async (req, res) => {
         const pLower = prompt.toLowerCase();
         let matchedArea = "Direito Civil";
         let tip = "Recomendamos que traga uma cópia de todos os contratos e comunicações trocadas.";
-        
+
         if (pLower.includes("divorcio") || pLower.includes("guarda") || pLower.includes("inventario") || pLower.includes("filho") || pLower.includes("sucess")) {
           matchedArea = "Família e Sucessões";
           tip = "Questões de família necessitam de sensibilidade e sigilo. Guarde documentos civis (certidões) prontas para agilizarmos.";
@@ -247,7 +261,7 @@ app.post("/api/consult", async (req, res) => {
     }
 
     // Live backend connection to @google/genai SDK
-    const systemInstruction = 
+    const systemInstruction =
       "Você é o assistente virtual inteligente e sofisticado de triagem do escritório 'Amanda Ribeiro Advogados Associados'. " +
       "Seu objetivo é acolher o visitante, triar o problema jurídico apresentado e " +
       "orientar quais documentos ou atitude tomar a seguir, indicando qual área do escritório lidará melhor com o caso: " +

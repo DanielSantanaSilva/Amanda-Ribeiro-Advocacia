@@ -55,7 +55,7 @@ export default function About() {
               Quem Somos
             </span>
             <h2 className="text-3xl sm:text-4xl font-serif text-primary tracking-tight mb-6">
-              Amanda Ribeiro Advogados Associados
+              Amanda Ribeiro Advocacia Especializada
             </h2>
             <p className="text-base text-on-surface-variant font-light leading-relaxed mb-6">
               Nascemos da convicção de que o Direito deve atuar como um habilitador de novos negócios e um protetor seguro da estrutura familiar. Combinamos a sabedoria e a etiqueta da advocacia tradicional com as mais inovadoras ferramentas tecnológicas da modernidade.
