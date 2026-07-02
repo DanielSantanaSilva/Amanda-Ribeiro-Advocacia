@@ -87,7 +87,7 @@ export default function Contact({ preselectedSubject, onClearPreselected, onOpen
                   </div>
                   <div>
                     <h4 className="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">E-mail Corporativo</h4>
-                    <p className="text-sm text-primary font-bold mt-0.5">contato@ribeiroadv.com.br</p>
+                    <p className="text-sm text-primary font-bold mt-0.5">amandacr@adv.oabsp.org.br</p>
                   </div>
                 </div>
 
