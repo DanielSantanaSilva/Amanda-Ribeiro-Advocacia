@@ -81,7 +81,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               <div className="flex items-start gap-2.5 text-xs text-on-primary-container font-light leading-relaxed">
                 <Shield className="w-5 h-5 text-gold-leaf shrink-0 mt-0.5" />
                 <p>
-                  Inscrição OAB/SP sob nº 000.000. Atuação pautada estritamente segundo as provisões do Estatuto da Advocacia e o Código de Ética e Disciplina da OAB.
+                  Inscrição OAB/SP sob nº 499.477. Atuação pautada estritamente segundo as provisões do Estatuto da Advocacia e o Código de Ética e Disciplina da OAB.
                 </p>
               </div>
             </div>
