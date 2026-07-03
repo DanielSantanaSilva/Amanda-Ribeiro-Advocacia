@@ -12,7 +12,7 @@ export default function Contact({ preselectedSubject, onClearPreselected, onOpen
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [subject, setSubject] = useState('Direito Civil');
+  const [subject, setSubject] = useState('Direito Imobiliário');
   const [message, setMessage] = useState('');
 
   const [submitting, setSubmitting] = useState(false);
@@ -45,7 +45,7 @@ export default function Contact({ preselectedSubject, onClearPreselected, onOpen
         setEmail('');
         setPhone('');
         setMessage('');
-        setSubject('Direito Civil');
+        setSubject('Direito Imobiliário');
         onClearPreselected();
         setTimeout(() => setSuccess(false), 5000);
       } else {
