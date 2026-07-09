@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚖️ Amanda Ribeiro Advogados Associados
+# ⚖️ Amanda Ribeiro Advocacia
 
 **Website institucional e plataforma de consultoria jurídica inteligente**
 
