@@ -164,7 +164,7 @@ export default function Footer({ onNavigate }: FooterProps) {
       {/* Copyright Bar */}
       <div className="border-t border-white/5 py-8 text-center text-xs text-on-primary-container font-light">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p>© {currentYear} Amanda Ribeiro Advogados Associados. Todos os direitos reservados.</p>
+          <p>© {currentYear} Amanda Ribeiro Advocacia. Todos os direitos reservados.</p>
           <p className="text-[10px] opacity-60">Desenvolvido com excelência técnica responsiva corporativa.</p>
         </div>
       </div>
