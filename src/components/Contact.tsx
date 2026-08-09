@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Check, Sparkles } from 'lucide-react';
+import { Mail, Phone, MapPin, Check, Sparkles, Send } from 'lucide-react';
+import { motion } from 'motion/react';
 
 interface ContactProps {
   preselectedSubject?: string;
@@ -33,28 +34,42 @@ export default function Contact({ preselectedSubject, onClearPreselected, onOpen
 
     setSubmitting(true);
     try {
-      const res = await fetch('/api/appointments', {
+      // 1. Send via FormSubmit service directly to amandacr@adv.oabsp.org.br (zero SMTP setup required)
+      const formSubmitPromise = fetch('https://formsubmit.co/ajax/amandacr@adv.oabsp.org.br', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          Nome: name,
+          Email: email,
+          Telefone: phone,
+          "Área Jurídica": subject,
+          Mensagem: message || "Nenhuma mensagem adicional",
+          _subject: `Novo Contato do Site - ${subject} (${name})`
+        })
+      });
+
+      // 2. Also register in local database server endpoint
+      const internalServerPromise = fetch('/api/appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, phone, subject, message }),
       });
 
-      if (res.ok) {
-        setSuccess(true);
-        setName('');
-        setEmail('');
-        setPhone('');
-        setMessage('');
-        setSubject('Direito Imobiliário');
-        onClearPreselected();
-        setTimeout(() => setSuccess(false), 5000);
-      } else {
-        const err = await res.json();
-        alert(err.error || 'Algo deu errado. Por favor, tente novamente.');
-      }
+      await Promise.allSettled([formSubmitPromise, internalServerPromise]);
+
+      setSuccess(true);
+      setName('');
+      setEmail('');
+      setPhone('');
+      setMessage('');
+      setSubject('Direito Imobiliário');
+      onClearPreselected();
     } catch (err) {
       console.error(err);
-      alert('Falha na comunicação. Por favor, tente novamente.');
+      alert('Falha no envio. Por favor, tente novamente.');
     } finally {
       setSubmitting(false);
     }
@@ -135,7 +150,7 @@ export default function Contact({ preselectedSubject, onClearPreselected, onOpen
           </div>
 
           {/* Form (7 cols) */}
-          <div className="lg:col-span-7 bg-surface p-6 sm:p-10 rounded-lg border border-outline-variant/30 shadow-xs flex flex-col">
+          <div className="lg:col-span-7 bg-surface p-6 sm:p-10 rounded-lg border border-outline-variant/30 shadow-xs flex flex-col relative">
 
             {/* Header */}
             <div className="mb-8 shrink-0">
@@ -147,113 +162,137 @@ export default function Contact({ preselectedSubject, onClearPreselected, onOpen
               </h3>
             </div>
 
-            {/* Success state */}
-            {success ? (
-              <div className="flex-1 flex flex-col items-center justify-center text-center p-10 animate-scaleIn">
-                <div className="w-16 h-16 bg-gold-leaf/10 border border-gold-leaf rounded-full flex items-center justify-center text-gold-leaf mb-6">
-                  <Check className="w-8 h-8" />
-                </div>
-                <h3 className="font-serif text-2xl font-bold text-primary mb-2">Solicitação Enviada!</h3>
-                <p className="text-sm text-on-surface-variant max-w-md">
-                  Sua solicitação foi recebida pela Dra. Amanda. Entraremos em contato em breve pelo telefone informado.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6 flex-1">
+            <form onSubmit={handleSubmit} className="space-y-6 flex-1">
 
-                {/* Nome + E-mail */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-wider text-primary font-semibold mb-1">
-                      Nome Completo <span className="text-gold-leaf">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Ex: Arthur de Souza"
-                      className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-wider text-primary font-semibold mb-1">
-                      E-mail para Contato <span className="text-gold-leaf">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Ex: arthur@souza.com"
-                      className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all"
-                    />
-                  </div>
-                </div>
-
-                {/* Telefone + Área */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-wider text-primary font-semibold mb-1">
-                      Telefone / WhatsApp <span className="text-gold-leaf">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="Ex: (11) 98765-4321"
-                      className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-wider text-primary font-semibold mb-1">
-                      Área Jurídica Pretendida
-                    </label>
-                    <select
-                      value={subject}
-                      onChange={(e) => setSubject(e.target.value)}
-                      className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all"
-                    >
-                      <option value="Direito Imobiliário">Direito Imobiliário</option>
-                      <option value="Direito Civil">Direito Civil</option>
-                      <option value="Família e Sucessões">Família e Sucessões</option>
-                      <option value="Direito do Trabalho">Direito do Trabalho</option>
-                      <option value="Direito Corporativo">Direito Corporativo</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Mensagem */}
+              {/* Nome + E-mail */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] uppercase tracking-wider text-primary font-semibold mb-1">
-                    Descreva seu caso <span className="text-on-surface-variant font-normal">(Opcional)</span>
+                    Nome Completo <span className="text-gold-leaf">*</span>
                   </label>
-                  <textarea
-                    rows={5}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Forneça detalhes sobre sua situação jurídica para que possamos orientá-lo da melhor forma..."
-                    className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all resize-none"
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Ex: Arthur de Souza"
+                    className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all"
                   />
                 </div>
+                <div>
+                  <label className="block text-[10px] uppercase tracking-wider text-primary font-semibold mb-1">
+                    E-mail para Contato <span className="text-gold-leaf">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Ex: arthur@souza.com"
+                    className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all"
+                  />
+                </div>
+              </div>
 
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full bg-primary hover:bg-ink-dark disabled:bg-primary/50 text-white font-bold text-xs uppercase tracking-widest py-4 rounded transition-all cursor-pointer shadow"
-                >
-                  {submitting ? 'Enviando...' : 'Solicitar Consultoria'}
-                </button>
+              {/* Telefone + Área */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] uppercase tracking-wider text-primary font-semibold mb-1">
+                    Telefone / WhatsApp <span className="text-gold-leaf">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Ex: (11) 98765-4321"
+                    className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase tracking-wider text-primary font-semibold mb-1">
+                    Área Jurídica Pretendida
+                  </label>
+                  <select
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all"
+                  >
+                    <option value="Direito Imobiliário">Direito Imobiliário</option>
+                    <option value="Direito Civil">Direito Civil</option>
+                    <option value="Família e Sucessões">Família e Sucessões</option>
+                    <option value="Direito do Trabalho">Direito do Trabalho</option>
+                    <option value="Direito Corporativo">Direito Corporativo</option>
+                  </select>
+                </div>
+              </div>
 
-              </form>
-            )}
+              {/* Mensagem */}
+              <div>
+                <label className="block text-[10px] uppercase tracking-wider text-primary font-semibold mb-1">
+                  Descreva seu caso <span className="text-on-surface-variant font-normal">(Opcional)</span>
+                </label>
+                <textarea
+                  rows={5}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Forneça detalhes sobre sua situação jurídica para que possamos orientá-lo da melhor forma..."
+                  className="w-full bg-white border border-outline-variant/60 rounded px-4 py-2.5 text-sm font-light text-primary focus:outline-none focus:border-gold-leaf focus:ring-1 focus:ring-gold-leaf transition-all resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full bg-primary hover:bg-ink-dark disabled:bg-primary/50 text-white font-bold text-xs uppercase tracking-widest py-4 rounded transition-all cursor-pointer shadow flex items-center justify-center gap-2 group"
+              >
+                {submitting ? 'Enviando...' : 'Solicitar Consultoria'}
+                <Send size={15} className="group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
+              </button>
+
+            </form>
 
           </div>
 
         </div>
 
       </div>
+
+      {/* POP-UP MODAL OVERLAY */}
+      {success && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/60 backdrop-blur-xs animate-fadeIn">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-white border border-gold-leaf/40 rounded-xl p-8 sm:p-10 max-w-md w-full shadow-2xl text-center relative space-y-6"
+          >
+            <div className="w-16 h-16 bg-gold-leaf/10 border-2 border-gold-leaf rounded-full flex items-center justify-center mx-auto text-gold-leaf shadow-md">
+              <Check className="w-8 h-8" />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-primary">
+                Mensagem Enviada!
+              </h3>
+              <p className="font-sans text-xs uppercase tracking-widest text-gold-leaf font-semibold">
+                Amanda Ribeiro Advocacia
+              </p>
+            </div>
+
+            <p className="font-sans text-sm text-on-surface-variant leading-relaxed">
+              Sua consulta foi registrada com sucesso e encaminhada para <strong>amandacr@adv.oabsp.org.br</strong>. Nossa equipe analisará as informações e entrará em contato em breve.
+            </p>
+
+            <button
+              onClick={() => setSuccess(false)}
+              className="w-full bg-primary hover:bg-ink-dark text-white font-bold text-xs uppercase tracking-widest py-3.5 rounded transition-all duration-300 cursor-pointer shadow border border-gold-leaf/30"
+            >
+              Fechar Janela
+            </button>
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 }

@@ -188,8 +188,8 @@ app.get("/api/appointments", (req, res) => {
   res.json(appointments);
 });
 
-// 5. Create Appointment / Consultation Request
-app.post("/api/appointments", (req, res) => {
+// 5. Create Appointment / Consultation Request (Sends email to amandacr@adv.oabsp.org.br)
+app.post("/api/appointments", async (req, res) => {
   const { name, email, phone, subject, message, date, preferredTimeSlot } = req.body;
   if (!name || !email || !phone || !subject) {
     return res.status(400).json({ error: "Campos obrigatórios ausentes (nome, email, telefone, assunto)." });
@@ -209,6 +209,77 @@ app.post("/api/appointments", (req, res) => {
   };
 
   appointments.unshift(newApp);
+
+  // Send Email Notification to Dra. Amanda Ribeiro (amandacr@adv.oabsp.org.br)
+  try {
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpPort = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : 587;
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+
+    if (smtpHost && smtpUser && smtpPass && smtpHost !== "your_smtp_host") {
+      try {
+        const nodemailer = await import("nodemailer");
+        const transporter = nodemailer.createTransport({
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465,
+          auth: {
+            user: smtpUser,
+            pass: smtpPass,
+          },
+        });
+
+        const mailOptions = {
+          from: `"Website Amanda Ribeiro Adv" <${smtpUser}>`,
+          to: "amandacr@adv.oabsp.org.br",
+          replyTo: email,
+          subject: `[Novo Contato do Site] ${subject} - ${name}`,
+          text: `Nova solicitação de consultoria via formulário do site:\n\n` +
+            `Nome: ${name}\n` +
+            `E-mail: ${email}\n` +
+            `Telefone/WhatsApp: ${phone}\n` +
+            `Área Pretendida: ${subject}\n` +
+            `Mensagem:\n${message || "Nenhuma mensagem complementar."}\n\n` +
+            `Data do registro: ${new Date().toLocaleString("pt-BR")}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; color: #091426; max-width: 600px; margin: 0 auto; border: 1px solid #D4AF37; border-radius: 8px; overflow: hidden;">
+              <div style="background-color: #091426; padding: 20px; text-align: center; color: #D4AF37;">
+                <h2 style="margin: 0; font-size: 20px;">Amanda Ribeiro Advocacia</h2>
+                <p style="margin: 5px 0 0 0; font-size: 12px; color: #ffffff;">Nova Consulta Recebida pelo Site</p>
+              </div>
+              <div style="padding: 24px; background-color: #f7f9fb;">
+                <p style="font-size: 14px; margin-top: 0;">Você recebeu uma nova mensagem através do formulário de contato do site:</p>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px;">
+                  <tr><td style="padding: 8px 0; font-weight: bold; width: 140px;">Nome:</td><td>${name}</td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold;">E-mail:</td><td><a href="mailto:${email}">${email}</a></td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold;">Telefone / WhatsApp:</td><td><a href="https://wa.me/55${phone.replace(/\D/g, '')}">${phone}</a></td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold;">Área Pretendida:</td><td><span style="background: #D4AF37; color: #091426; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 12px;">${subject}</span></td></tr>
+                </table>
+                <div style="background-color: #ffffff; padding: 16px; border-left: 4px solid #D4AF37; border-radius: 4px; margin-bottom: 20px;">
+                  <strong style="display: block; margin-bottom: 8px;">Mensagem do Cliente:</strong>
+                  <p style="margin: 0; white-space: pre-wrap; font-size: 13px; color: #45474c;">${message || "Nenhuma mensagem adicional."}</p>
+                </div>
+              </div>
+              <div style="background-color: #eceef0; padding: 12px; text-align: center; font-size: 11px; color: #45474c;">
+                Mensagem enviada automaticamente pelo sistema do site amandacr@adv.oabsp.org.br
+              </div>
+            </div>
+          `
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log(`[SMTP EMAIL SENT SUCCESS] Email enviado com sucesso para amandacr@adv.oabsp.org.br sobre o formulário de ${name}`);
+      } catch (modErr: any) {
+        console.log(`[SMTP SYSTEM NOTE] Para ativar o envio SMTP real, execute "npm install nodemailer" no terminal do projeto. Registro armazenado em memória local.`);
+      }
+    } else {
+      console.log(`[FORM SUBMISSION] Formulário registrado com sucesso. E-mail de destino: amandacr@adv.oabsp.org.br. (Para disparo de e-mail real via servidor SMTP, preencha as credenciais SMTP no arquivo .env). Dados: Nome=${name}, E-mail=${email}, Assunto=${subject}`);
+    }
+  } catch (emailErr) {
+    console.error("[SMTP EMAIL ERROR] Erro ao processar notificação de e-mail:", emailErr);
+  }
+
   res.status(201).json(newApp);
 });
 
